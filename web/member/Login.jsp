@@ -33,6 +33,16 @@
                 <td><input type="submit" value="Đăng nhập" /></td>
             </tr>
         </table>
+        <div style="text-align: center; margin-top: 15px;">
+            Chưa có tài khoản? <a href="Register.jsp">Đăng ký tại đây</a>
+        </div>
+
+        <% 
+            String msg = request.getParameter("msg");
+            if("reg_success".equals(msg)) {
+        %>
+            <p style="color: green; text-align: center;">Đăng ký thành công! Vui lòng đăng nhập.</p>
+        <% } %>
     </form>
 </body>
 </html>

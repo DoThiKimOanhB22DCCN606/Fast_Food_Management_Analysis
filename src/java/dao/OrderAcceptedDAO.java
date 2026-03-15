@@ -42,14 +42,11 @@ public class OrderAcceptedDAO extends DAO {
     /**
      * Lấy toàn bộ danh sách đơn hàng đã được duyệt (Accepted).
      * Bao gồm cả các đơn đã được Shipper nhận (PickUp) và đơn Shipper đã hủy (CancelShipper).
-     * Hàm này phục vụ cho trang ChooseOrder.jsp để lọc thành 3 list.
      */
     public ArrayList<OrderAccepted> getOrderInfo() {
         ArrayList<OrderAccepted> result = new ArrayList<>();
         
-        // Câu SQL kết nối các bảng theo thứ tự kế thừa:
-        // Order -> OrderAccepted -> PickUpByShipper -> CancelByShipper
-        // Đồng thời join bảng Member để lấy thông tin Khách hàng và Shipper
+        // join bảng Member để lấy thông tin Khách hàng và Shipper
         String sql = "SELECT o.*, "
                    + "m.Fullname AS CusName, m.Address AS CusAddress, m.Number AS CusPhone, " // Thông tin Khách
                    + "oa.AcceptedTime, "
@@ -60,7 +57,7 @@ public class OrderAcceptedDAO extends DAO {
                    + "JOIN tblOrderAccepted oa ON o.ID = oa.tblOrderID " // Chỉ lấy đơn đã duyệt
                    + "JOIN tblMember m ON o.tblMemberID = m.ID "         // Join Khách hàng
                    + "LEFT JOIN tblOrderPickUpByShipper op ON oa.tblOrderID = op.tblOrderAcceptedID " // Join bảng PickUp
-                   + "LEFT JOIN tblMember s ON op.shipperID = s.ID "     // Join Shipper (nếu có)
+                   + "LEFT JOIN tblMember s ON op.shipperID = s.ID " 
                    + "LEFT JOIN tblOrderCancelByShipper ocs ON op.tblOrderAcceptedID = ocs.tblOrderPickUpByShipperID " // Join bảng Hủy
                    + "ORDER BY o.ID DESC";
 
@@ -69,18 +66,18 @@ public class OrderAcceptedDAO extends DAO {
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
-                // 1. Tạo đối tượng Customer
+                //Tạo đối tượng Customer
                 Customer cus = new Customer();
                 cus.setId(rs.getInt("tblMemberID"));
                 cus.setFullname(rs.getString("CusName"));
                 cus.setAddress(rs.getString("CusAddress"));
                 cus.setNumber(rs.getString("CusPhone"));
 
-                // 2. Kiểm tra xem đơn hàng thuộc loại nào (dựa trên dữ liệu các bảng con)
+                //Kiểm tra xem đơn hàng thuộc loại nào 
                 OrderAccepted oa = null;
 
                 if (rs.getDate("CanceledTime") != null) {
-                    // --- TRƯỜNG HỢP 3: Đơn đã bị Shipper hủy ---
+                    // Đơn đã bị Shipper hủy 
                     OrderCancelByShipper oc = new OrderCancelByShipper();
                     oc.setCanceledTime(rs.getTimestamp("CanceledTime"));
                     oc.setReason(rs.getString("Reason"));
@@ -96,7 +93,7 @@ public class OrderAcceptedDAO extends DAO {
                     oa = oc; // Gán vào biến cha
                     
                 } else if (rs.getDate("PickUpTime") != null) {
-                    // --- TRƯỜNG HỢP 2: Đơn đang được giao (Đã PickUp) ---
+                    // Đơn đang được giao (Đã PickUp) 
                     OrderPickUpByShipper op = new OrderPickUpByShipper();
                     op.setPickUpTime(rs.getTimestamp("PickUpTime"));
                     
@@ -110,11 +107,11 @@ public class OrderAcceptedDAO extends DAO {
                     oa = op; // Gán vào biến cha
                     
                 } else {
-                    // --- TRƯỜNG HỢP 1: Đơn mới duyệt (Chưa ai nhận) ---
+                    // Đơn mới duyệt (Chưa ai nhận) 
                     oa = new OrderAccepted();
                 }
 
-                // 3. Map các thông tin chung từ bảng Order và OrderAccepted
+                // Map các thông tin chung từ bảng Order và OrderAccepted
                 oa.setId(rs.getInt("ID"));
                 oa.setCode(rs.getString("Code"));
                 oa.setTotal(rs.getDouble("Total"));

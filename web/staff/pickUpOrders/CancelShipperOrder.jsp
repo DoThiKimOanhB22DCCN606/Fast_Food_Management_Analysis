@@ -19,7 +19,7 @@
         }
     }
     
-    //Lưu đơn hàng cần hủy vào Session để trang xử lý (doCancel) dùng
+    //Lưu đơn hàng cần hủy vào Session để trang doCancel dùng
     if (orderToCancel != null) {
         session.setAttribute("orderToCancel", orderToCancel);
     } else {

@@ -20,14 +20,14 @@ public class OrderCancelByShipperDAO extends DAO {
         try {
             con.setAutoCommit(false);
             
-            // 1. Insert bảng Cancel
+            //Insert bảng Cancel
             PreparedStatement ps1 = con.prepareStatement(sqlInsert);
-            ps1.setInt(1, o.getId()); // ID của đơn hàng
+            ps1.setInt(1, o.getId()); 
             ps1.setTimestamp(2, new java.sql.Timestamp(o.getCanceledTime().getTime()));
             ps1.setString(3, o.getReason());
             ps1.executeUpdate();
             
-            // 2. Update trạng thái Order
+            //Update trạng thái Order
             PreparedStatement ps2 = con.prepareStatement(sqlUpdateOrder);
             ps2.setInt(1, o.getId());
             ps2.executeUpdate();

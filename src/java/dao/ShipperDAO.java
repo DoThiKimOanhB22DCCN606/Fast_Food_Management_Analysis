@@ -25,7 +25,7 @@ public class ShipperDAO extends DAO {
             while(rs.next()) {
                 Shipper s = new Shipper();
                 
-                // Map đúng cột trong DB vào đúng thuộc tính của Member (lớp cha)
+                //set thuộc tính cho shipper
                 s.setId(rs.getInt("ID"));
                 s.setCode(rs.getString("Code"));
                 s.setNumber(rs.getString("Number"));   

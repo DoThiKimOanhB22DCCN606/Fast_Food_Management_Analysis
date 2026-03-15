@@ -14,17 +14,15 @@
     </head>
     <body>
         <%
-            // 1. Nhận tham số
+            // Nhận tham số
             String shipperCode = request.getParameter("shipperCode");
-            
-
             ArrayList<Shipper> shipperList = (ArrayList<Shipper>) session.getAttribute("shipperList");
             Shipper currentShipper = null;
 
-            // 3. Tìm đối tượng Shipper
+            //Tìm đối tượng Shipper
             if (shipperList != null && shipperCode != null) {
                 for (Shipper s : shipperList) {
-                    if (shipperCode.equals(s.getCode())) { // So sánh an toàn
+                    if (shipperCode.equals(s.getCode())) { 
                         currentShipper = s;
                         break;
                     }
@@ -44,7 +42,7 @@
             // Lưu shipper hiện tại
             session.setAttribute("currentShipper", currentShipper);
             
-            // 4. Gọi DAO lấy danh sách đơn hàng
+            //  Gọi DAO lấy danh sách đơn hàng
             OrderAcceptedDAO oaDAO = new OrderAcceptedDAO();
             // Truyền tham số staff vào hàm getOrderInfo
             ArrayList<OrderAccepted> allOrders = oaDAO.getOrderInfo(); 

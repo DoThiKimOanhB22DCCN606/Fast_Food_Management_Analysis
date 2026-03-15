@@ -22,7 +22,7 @@
             // gọi searchShipper() 
             ArrayList<Shipper> list = shipperDAO.searchShipper(keyword);
             
-            // S lưu vào session 
+            // lưu vào session list shipper
             session.setAttribute("shipperList", list);
             
             if(list.isEmpty()){

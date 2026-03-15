@@ -21,7 +21,7 @@
         boolean result = dao.cancelOrder(orderCancel);
         
         if (result) {
-            //Thành công: Xóa session cũ để load lại dữ liệu mới
+            //Xóa session cũ để load lại dữ liệu mới
             session.removeAttribute("pendingList");
             session.removeAttribute("deliveringList");
             session.removeAttribute("cancelledList");

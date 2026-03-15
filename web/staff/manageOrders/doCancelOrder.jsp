@@ -14,7 +14,7 @@
         // Gọi DAO
         OrderCancelByCustomerDAO dao = new OrderCancelByCustomerDAO();
         
-        // SỬA: Nhận kết quả trả về (boolean)
+        // Nhận kết quả trả về (boolean)
         boolean isSuccess = dao.addOrderCancel(oc);
         
         if (isSuccess) {

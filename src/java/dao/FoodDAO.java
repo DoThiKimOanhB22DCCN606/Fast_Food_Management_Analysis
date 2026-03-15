@@ -17,7 +17,7 @@ public class FoodDAO extends DAO {
         String sql = "SELECT * FROM tblFood WHERE Name LIKE ?"; 
         try {
             PreparedStatement ps = con.prepareStatement(sql);
-            ps.setString(1, "%" + keyword + "%"); // chống SQL Injection
+            ps.setString(1, "%" + keyword + "%"); 
             ResultSet rs = ps.executeQuery();
 
             while (rs.next()) {
